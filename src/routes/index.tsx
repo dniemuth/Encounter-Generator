@@ -20,6 +20,10 @@ export default component$(() => {
     { deep: true }
   );
   useContextProvider(EncounterContext, encounterStore);
+  {console.log(process.env.DTEST)}
+  {console.log(process.env.VITE_DTEST)}
+  {console.log(import.meta.env.VITE_DTEST)}
+  {console.log(import.meta.env.DTEST)}
   return (
     <div class="grid grid-cols-2">
       <div class="bg-slate-900 min-h-screen text-white p-6">

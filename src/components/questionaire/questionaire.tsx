@@ -4,10 +4,19 @@ import { EncounterContext } from '~/routes';
 
 export const useSubmitPrompt = globalAction$(
   (item) => {
+    console.log(process.env.DTEST);
+    console.log(process.env.VITE_DTEST);
+    console.log(import.meta.env.DTEST);
+    console.log('hellow')
+    console.log(import.meta.env.VITE_DTEST);
     return {
       success: true,
       response: `Here lies the ecounter details ${item.text}`,
       item,
+      pd: process.env.DTEST,
+      pv: process.env.VITE_DTEST,
+      id: import.meta.env.DTEST,
+      iv: import.meta.env.VITE_DTEST
     };
   },
   zod$({
@@ -35,6 +44,7 @@ export const Questionaire = component$(() => {
       </Form>
       <br />
 
+      {console.info(action.value)}
       {action.value?.success ? <p>{action.value?.response}</p> : null}
     </>
   );
