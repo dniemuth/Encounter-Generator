@@ -4,11 +4,11 @@ import { EncounterContext } from '~/routes';
 
 export const useSubmitPrompt = globalAction$(
   (item) => {
-    console.log(process.env.DTEST);
-    console.log(process.env.VITE_DTEST);
-    console.log(import.meta.env.DTEST);
+    console.log('DTEST', process.env.DTEST);
+    console.log('VITE_DTEST', process.env.VITE_DTEST);
+    console.log('META DTEST', import.meta.env.DTEST);
     console.log('hellow')
-    console.log(import.meta.env.VITE_DTEST);
+    console.log('META VITE_DTEST', import.meta.env.VITE_DTEST);
     return {
       success: true,
       response: `Here lies the ecounter details ${item.text}`,
