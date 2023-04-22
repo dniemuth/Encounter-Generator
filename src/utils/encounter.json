@@ -1,0 +1,86 @@
+{
+  "name": "Elder Dragon",
+  "type": "Dragon",
+  "size": "Gargantuan",
+  "alignment": "Chaotic Evil",
+  "armorClass": 28,
+  "hitPoints": 825,
+  "speed": { "walk": 40, "fly": 80 },
+  "abilities": {
+    "strength": 30,
+    "dexterity": 10,
+    "constitution": 30,
+    "intelligence": 20,
+    "wisdom": 15,
+    "charisma": 25
+  },
+  "savingThrows": ["dexterity", "constitution", "wisdom", "charisma"],
+  "skills": ["Perception", "Intimidation"],
+  "damageResistances": ["fire", "cold", "lightning", "poison"],
+  "damageImmunities": [
+    "bludgeoning",
+    "piercing",
+    "slashing from nonmagical weapons"
+  ],
+  "conditionImmunities": [
+    "charmed",
+    "exhaustion",
+    "frightened",
+    "paralyzed",
+    "petrified",
+    "poisoned"
+  ],
+  "senses": {
+    "passiveperception": 25,
+    "darkvision": 120,
+    "blindsight": 60,
+    "tremorsense": 60,
+    "truesight": 120
+  },
+  "languages": ["Draconic"],
+  "challengeRating": 28,
+  "specialAbilities": [
+    {
+      "name": "Breath Weapon (Recharge 5-6)",
+      "description": "The dragon exhales destructive energy in a 120-foot cone. Each creature in that area must make a DC 28 Dexterity saving throw, taking 88 (16d10) damage on a failed save, or half as much damage on a successful one."
+    },
+    {
+      "name": "Legendary Resistance (3/day)",
+      "description": "If the dragon fails a saving throw, it can choose to succeed instead."
+    },
+    {
+      "name": "Frightful Presence",
+      "description": "Each creature of the dragon's choice within 120 feet of it and aware of it must succeed on a DC 26 Wisdom saving throw or become frightened for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+    }
+  ],
+  "actions": [
+    {
+      "name": "Multiattack",
+      "description": "The dragon can use its Frightful Presence. It then makes three attacks: one with its bite and two with its claws."
+    },
+    {
+      "name": "Bite",
+      "description": "Melee Weapon Attack: +20 to hit, reach 20 ft., one target. Hit: 24 (3d8 + 11) piercing damage plus 14 (4d6) fire damage."
+    },
+    {
+      "name": "Claw",
+      "description": "Melee Weapon Attack: +20 to hit, reach 15 ft., one target. Hit: 20 (3d6 + 11) slashing damage."
+    },
+    {
+      "name": "Tail",
+      "description": "Melee Weapon Attack: +20 to hit, reach 25 ft., one target. Hit: 24 (3d8 + 11) bludgeoning damage."
+    }
+  ],
+  "reactions": [],
+  "legendaryActions": [
+    {
+      "name": "Detect",
+      "description": "The dragon makes a Wisdom (Perception) check."
+    },
+    {
+      "name": "Wing Attack (Costs 2 Actions)",
+      "description": "The dragon beats its wings. Each creature within 20 feet of the dragon must succeed on a DC 28 Dexterity saving throw or take 20 (3d6 + 10) bludgeoning damage and be knocked prone. The dragon can then fly up to half its flying speed."
+    },
+    { "name": "Tail Attack", "description": "The dragon makes a tail attack." }
+  ]
+}
