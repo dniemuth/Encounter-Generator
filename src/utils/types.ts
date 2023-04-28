@@ -70,3 +70,11 @@ export interface IQuestionaire {
   type?: string;
   text?: string;
 }
+
+export interface IStoryPrompts {
+  alignment?: string;
+  name?: string;
+  size?: string;
+  type?: string;
+  text?: string;
+}

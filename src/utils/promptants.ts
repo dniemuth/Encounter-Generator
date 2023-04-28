@@ -83,3 +83,5 @@ export const PROMPT_EXAMPLE = `Example JSON format:
   "reactions": [],
   "legendaryActions": []
 }`;
+
+export const STORY_INTRO = `Create a short story for a D&D character.`

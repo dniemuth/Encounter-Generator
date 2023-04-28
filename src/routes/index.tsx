@@ -4,22 +4,26 @@ import {
   useContextProvider,
   createContextId,
 } from "@builder.io/qwik";
-import type { DocumentHead} from "@builder.io/qwik-city";
+import type { DocumentHead } from "@builder.io/qwik-city";
 import { routeAction$, zod$, z } from "@builder.io/qwik-city";
 import { Questionaire } from "~/components/questionaire/questionaire";
 import { Encounter } from "~/components/encounter/encounter";
-import { PROMPT_ENDING, PROMPT_EXAMPLE, PROMPT_INTRO, PAYLOAD } from "~/utils/promptants";
-import { createMessage } from "~/utils/helpers";
+import { PROMPT_ENDING, PROMPT_EXAMPLE, PROMPT_INTRO, PAYLOAD, STORY_INTRO } from "~/utils/promptants";
+import { createMessage, createStoryPrompt } from "~/utils/helpers";
+// import { PAYLOAD, STORY_INTRO } from "~/utils/promptants";
+// import { createStoryPrompt } from "~/utils/helpers";
 import type { IQuestionaire } from "~/utils/types";
-// import temp from '~/utils/encounter.json';
+// import temp from "~/utils/encounter.json";
 
-export const EncounterContext = createContextId<{ data: string }>(
-  "io.encounterbuilder.context"
-);
+export const EncounterContext = createContextId<{
+  data: string;
+  story: string;
+}>("io.encounterbuilder.context");
 
 export const useSubmitPrompt = routeAction$(
-  async (item: IQuestionaire, requestEvent) => {
-    const APIKEY = requestEvent.env.get('APIKEY');
+  async (item: IQuestionaire) => {
+    console.log(item);
+    const APIKEY =  process.env['APIKEY'];
     const userPrompts = createMessage(item);
     const messageContent = `${PROMPT_INTRO} ${userPrompts} ${PROMPT_ENDING}${PROMPT_EXAMPLE}`;
     const messages = { messages: [{ role: "user", content: messageContent }] };
@@ -32,7 +36,11 @@ export const useSubmitPrompt = routeAction$(
       body: JSON.stringify({ ...PAYLOAD, ...messages }),
     });
     const result = await res.json();
-    return {ok: res.ok, status: res.status, result}
+    // const res = { ok: true, status: "200" };
+    // const result = {
+    //   choices: [{ message: { content: JSON.stringify(temp) } }],
+    // };
+    return { ok: res.ok, status: res.status, result };
   },
   zod$({
     cr: z.string(),
@@ -42,10 +50,37 @@ export const useSubmitPrompt = routeAction$(
   })
 );
 
+export const useGetStory = routeAction$(
+  async (item) => {
+    const APIKEY = process.env['APIKEY'];
+    const storyPrompts = createStoryPrompt(item);
+    const messageContent = `${STORY_INTRO} ${storyPrompts}`;
+    const messages = { messages: [{ role: "user", content: messageContent }] };
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${APIKEY}`,
+      },
+      method: "POST",
+      body: JSON.stringify({ ...PAYLOAD, ...messages }),
+    });
+    const result = await res.json();
+    return { ok: res.ok, status: res.status, result };
+  },
+  zod$({
+    alignment: z.string().optional(),
+    name: z.string().optional(),
+    size: z.string().optional(),
+    type: z.string().optional(),
+    text: z.string().optional(),
+  })
+);
+
 export default component$(() => {
-  const encounterStore = useStore<{ data: string }>(
+  const encounterStore = useStore<{ data: string; story: string }>(
     {
-      data: '',
+      data: "",
+      story: "",
       // data: JSON.stringify(temp)
     },
     { deep: true }
@@ -68,7 +103,8 @@ export const head: DocumentHead = {
   meta: [
     {
       name: "description",
-      content: "Generative beastiary, using AI to create your D&D 5E Encounters",
+      content:
+        "Generative beastiary, using AI to create your D&D 5E Encounters",
     },
   ],
 };

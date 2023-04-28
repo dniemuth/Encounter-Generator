@@ -183,6 +183,11 @@ export const Encounter = component$(() => {
           )}
         </div>
       )}
+      {encounterData?.story && (
+        <div>
+          {encounterData?.story}
+        </div>
+      )}
     </>
   );
 });
