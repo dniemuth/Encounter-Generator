@@ -1,0 +1,88 @@
+{
+  "name": "The Arcane Storm",
+  "type": "Humanoid",
+  "size": "Medium",
+  "alignment": "Any",
+  "armorClass": 13,
+  "hitPoints": 100,
+  "speed": {
+    "walk": 30,
+    "climb": 20,
+    "fly": 60
+  },
+  "abilities": {
+    "strength": 10,
+    "dexterity": 14,
+    "constitution": 12,
+    "intelligence": 16,
+    "wisdom": 10,
+    "charisma": 14
+  },
+  "savingThrows": ["intelligence", "wisdom", "charisma"],
+  "skills": ["Arcana", "History", "Investigation", "Perception", "Sleight of Hand", "Spellcasting"],
+  "damageResistances": ["bludgeoning", "piercing", "slashing from nonmagical weapons"],
+  "damageImmunities": [],
+  "conditionImmunities": ["charm", "frightened"],
+  "senses": {
+    "passiveperception": 12,
+    "darkvision": 60
+  },
+  "languages": ["Common", "Any other language known by its creator"],
+  "challengeRating": 7,
+  "specialAbilities": [
+    {
+      "name": "Arcane Recovery",
+      "description": "On a short rest, The Arcane Storm can regain a number of spell slots equal to half their level (rounded up)."
+    },
+    {
+      "name": "Spellcasting",
+      "description": "The Arcane Storm is a 7th-level spellcaster. Their spellcasting ability is Intelligence (spell save DC 13, +5 to hit with spell attacks). They know the following spells:
+    
+        Cantrips (at will): mage hand, prestidigitation, ray of frost
+    
+        First level (4 slots): burning hands, charm person, mage armor, shield
+    
+        Second level (3 slots): magic missile, misty step
+    
+        Third level (2 slots): fireball, haste
+      }"
+    },
+    {
+      "name": "Arcane Storm",
+      "description": "The Arcane Storm can unleash a powerful blast of arcane energy in a 30-foot radius. Each creature in the area must make a Dexterity saving throw. A creature takes 10d6 force damage on a failed save, or half as much damage on a successful one.
+    
+        After using this ability, The Arcane Storm must take a short rest before using it again."
+    }
+  ],
+  "actions": [
+    {
+      "name": "Quarterstaff",
+      "description": "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 5 (1d6 + 2) bludgeoning damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be knocked prone."
+    },
+    {
+      "name": "Fireball",
+      "description": "A 20-foot-radius sphere of fire erupts from a point you choose within range. Each creature in the sphere must make a Dexterity saving throw. A creature takes 8d6 fire damage on a failed save, or half as much damage on a successful one. A flammable object in the area that isn't being worn or carried ignites if it isn't being attended by a creature.
+    
+        After you cast the spell, you can create a number of motes of fire within range equal to your Intelligence modifier (minimum of one). Each mote is a Tiny ball of fire, about the size of a marble, that hovers in the air for 1 minute. The motes move with you if you move more than 10 feet away from them.
+    
+        As an action, you can hurl one of the motes at a creature within 30 feet of you. Make a ranged spell attack against the target. On a hit, the target takes 1d4 fire damage.
+      }"
+    },
+    {
+      "name": "Arcane Storm",
+      "description": "The Arcane Storm can unleash a powerful blast of arcane energy in a 30-foot radius. Each creature in the area must make a Dexterity saving throw. A creature takes 10d6 force damage on a failed save, or half as much damage on a successful one.
+    
+        After using this ability, The Arcane Storm must take a short rest before using it again.
+      }",
+      "cost": 1 reaction
+    },
+    {
+      "name": "Legendary Action: Arcane Bolt",
+      "description": "The Arcane Storm can use a legendary action to create a bolt of arcane energy that deals 5d6 force damage to a creature within 60 feet of it.
+      }",
+      "cost": 1 legendary action
+    }
+  ],
+  "reactions": [],
+  "legendaryActions": []
+}

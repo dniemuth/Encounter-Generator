@@ -1,0 +1,54 @@
+{
+  "name": "Bodyguard",
+  "type": "Humanoid",
+  "size": "Medium",
+  "alignment": "Any",
+  "armorClass": 14,
+  "hitPoints": 27,
+  "speed": {
+    "walk": 30,
+    "climb": 20,
+    "swim": 30
+  },
+  "abilities": {
+    "strength": 14,
+    "dexterity": 14,
+    "constitution": 14,
+    "intelligence": 10,
+    "wisdom": 12,
+    "charisma": 10
+  },
+  "savingThrows": ["strength", "dexterity", "constitution"],
+  "skills": ["Acrobatics", "Athletics", "Perception", "Stealth"],
+  "damageResistances": [],
+  "damageImmunities": [],
+  "conditionImmunities": [],
+  "senses": {
+    "passiveperception": 12,
+    "darkvision": 60
+  },
+  "languages": ["Common"],
+  "challengeRating": 1,
+  "specialAbilities": [
+    {
+      "name": "Deflect Missiles",
+      "description": "The bodyguard can use a reaction to deflect a ranged weapon attack that hits them. The attack is made at a disadvantage, and if the bodyguard succeeds on a Dexterity saving throw (DC 10 + half the attack's damage + the bodyguard's Dexterity modifier), the attack is deflected and the bodyguard takes no damage."
+    },
+    {
+      "name": "Bodyguard's Ward",
+      "description": "The bodyguard can use their action to create a ward around a creature within 5 feet of them. The ward lasts for 1 minute, and the creature within the ward gains a +2 bonus to AC and Dexterity saving throws. The bodyguard can only have one ward active at a time."
+    }
+  ],
+  "actions": [
+    {
+      "name": "Longsword",
+      "description": "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 2) slashing damage."
+    },
+    {
+      "name": "Hand Crossbow",
+      "description": "Ranged Weapon Attack: +4 to hit, range 30/120 ft., one target. Hit: 5 (1d6 + 2) piercing damage."
+    }
+  ],
+  "reactions": [],
+  "legendaryActions": []
+}

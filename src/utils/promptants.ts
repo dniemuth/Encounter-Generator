@@ -5,7 +5,7 @@ export const PAYLOAD = {
   max_tokens: 2048,
   top_p: 1.0,
   frequency_penalty: 0.0,
-  stream: false,
+  // stream: true,
   presence_penalty: 0.0,
   n: 1,
 };

@@ -69,6 +69,7 @@ export interface IQuestionaire {
   size?: string;
   type?: string;
   text?: string;
+  useGPT?: string;
 }
 
 export interface IStoryPrompts {

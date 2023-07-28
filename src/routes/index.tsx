@@ -8,7 +8,13 @@ import type { DocumentHead } from "@builder.io/qwik-city";
 import { routeAction$, zod$, z } from "@builder.io/qwik-city";
 import { Questionaire } from "~/components/questionaire/questionaire";
 import { Encounter } from "~/components/encounter/encounter";
-import { PROMPT_ENDING, PROMPT_EXAMPLE, PROMPT_INTRO, PAYLOAD, STORY_INTRO } from "~/utils/promptants";
+import {
+  PROMPT_ENDING,
+  PROMPT_EXAMPLE,
+  PROMPT_INTRO,
+  PAYLOAD,
+  STORY_INTRO,
+} from "~/utils/promptants";
 import { createMessage, createStoryPrompt } from "~/utils/helpers";
 // import { PAYLOAD, STORY_INTRO } from "~/utils/promptants";
 // import { createStoryPrompt } from "~/utils/helpers";
@@ -16,26 +22,48 @@ import type { IQuestionaire } from "~/utils/types";
 // import temp from "~/utils/encounter.json";
 
 export const EncounterContext = createContextId<{
+  dataFetching: boolean;
+  dataStream: string;
   data: string;
   story: string;
 }>("io.encounterbuilder.context");
 
 export const useSubmitPrompt = routeAction$(
   async (item: IQuestionaire) => {
-    console.log(item);
-    const APIKEY =  process.env['APIKEY'];
+    const {useGPT} = item;
+    console.log({useGPT});
+    console.log(item)
+    const APIKEY = useGPT
+      ? process.env["GPT_APIKEY"] ?? ""
+      : process.env["PALM_APIKEY"] ?? "";
+    const basePath = useGPT
+      ? "https://api.openai.com/v1/chat/completions"
+      : "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText";
+    const headers = {
+      "Content-Type": "application/json",
+      ...(useGPT
+        ? { Authorization: `Bearer ${APIKEY}` }
+        : { "x-goog-api-key": APIKEY }),
+    };
     const userPrompts = createMessage(item);
     const messageContent = `${PROMPT_INTRO} ${userPrompts} ${PROMPT_ENDING}${PROMPT_EXAMPLE}`;
-    const messages = { messages: [{ role: "user", content: messageContent }] };
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${APIKEY}`,
-      },
+    const body = useGPT
+      ? { ...PAYLOAD, messages: [{ role: "user", content: messageContent }] }
+      : {
+          prompt: {
+            text: messageContent,
+          },
+          temperature: 1.0,
+          candidate_count: 3,
+        };
+    console.info(JSON.stringify(body));
+    const res = await fetch(basePath, {
+      headers,
       method: "POST",
-      body: JSON.stringify({ ...PAYLOAD, ...messages }),
+      body: JSON.stringify(body),
     });
     const result = await res.json();
+    console.info(result);
     // const res = { ok: true, status: "200" };
     // const result = {
     //   choices: [{ message: { content: JSON.stringify(temp) } }],
@@ -47,24 +75,48 @@ export const useSubmitPrompt = routeAction$(
     size: z.string(),
     type: z.string(),
     text: z.string(),
+    useGPT: z.string().optional()
   })
 );
 
 export const useGetStory = routeAction$(
   async (item) => {
-    const APIKEY = process.env['APIKEY'];
+    console.log(item.useGPT);
+
+     const {useGPT} = item;
+    console.log({useGPT});
+    console.log(item)
+    const APIKEY = useGPT
+      ? process.env["GPT_APIKEY"] ?? ""
+      : process.env["PALM_APIKEY"] ?? "";
+    const basePath = useGPT
+      ? "https://api.openai.com/v1/chat/completions"
+      : "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText";
+    const headers = {
+      "Content-Type": "application/json",
+      ...(useGPT
+        ? { Authorization: `Bearer ${APIKEY}` }
+        : { "x-goog-api-key": APIKEY }),
+    };
     const storyPrompts = createStoryPrompt(item);
     const messageContent = `${STORY_INTRO} ${storyPrompts}`;
-    const messages = { messages: [{ role: "user", content: messageContent }] };
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${APIKEY}`,
-      },
+    const body = useGPT
+      ? { ...PAYLOAD, messages: [{ role: "user", content: messageContent }] }
+      : {
+          prompt: {
+            text: messageContent,
+          },
+          temperature: 1.0,
+          candidate_count: 3,
+        };
+
+    const res = await fetch(basePath, {
+      headers,
       method: "POST",
-      body: JSON.stringify({ ...PAYLOAD, ...messages }),
+      body: JSON.stringify(body),
     });
     const result = await res.json();
+    console.info(result);
     return { ok: res.ok, status: res.status, result };
   },
   zod$({
@@ -73,12 +125,20 @@ export const useGetStory = routeAction$(
     size: z.string().optional(),
     type: z.string().optional(),
     text: z.string().optional(),
+    useGPT: z.boolean().optional(),
   })
 );
 
 export default component$(() => {
-  const encounterStore = useStore<{ data: string; story: string }>(
+  const encounterStore = useStore<{
+    dataFetching: boolean;
+    dataStream: string;
+    data: string;
+    story: string;
+  }>(
     {
+      dataFetching: false,
+      dataStream: "",
       data: "",
       story: "",
       // data: JSON.stringify(temp)
