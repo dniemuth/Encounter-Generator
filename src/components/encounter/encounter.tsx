@@ -9,8 +9,12 @@ export const Encounter = component$(() => {
   const encounter: IStatBlock = isJsonString(encounterData.data)
     ? JSON.parse(encounterData.data)
     : {};
-  const speedKeys = encounterData.data ? Object.keys(encounter?.speed) ?? [] : [] ?? [];
-  const sensesKeys = encounterData.data ? Object.keys(encounter?.senses) ?? [] : [] ?? [];
+  const speedKeys = encounterData.data
+    ? Object.keys(encounter?.speed) ?? []
+    : [] ?? [];
+  const sensesKeys = encounterData.data
+    ? Object.keys(encounter?.senses) ?? []
+    : [] ?? [];
   const centses = sensesKeys.map(
     (sense) =>
       `${ESenses[sense as keyof typeof ESenses]} ${
@@ -38,7 +42,14 @@ export const Encounter = component$(() => {
 
   return (
     <>
-      {encounterData.dataFetching && <div class="max-h-40 overflow-auto whitespace-pre-wrap [overflow-anchor:none] [word-spacing:.5rem]">{encounterData.dataStream}</div>}
+      {/* {encounterData.dataFetching && <div class="max-h-40 overflow-auto whitespace-pre-wrap [overflow-anchor:none] [word-spacing:.5rem]">{encounterData.dataStream}</div>} */}
+      {encounterData.dataFetching && (
+        <div class="grid text-center place-content-center max-w-[37.5rem]">
+          <img src="/loader.gif" />
+          Generating...
+        </div>
+      )}
+      {/* <img src="/magic-loading1.gif" /> */}
       {!encounterData.dataFetching && encounterData.data && (
         <div class="max-w-[37.5rem]">
           <h2 class="text-red-800 text-3xl">{encounter?.name}</h2>
@@ -184,7 +195,9 @@ export const Encounter = component$(() => {
           )}
         </div>
       )}
-      {encounterData?.story && <div class="whitespace-pre-line">{encounterData?.story}</div>}
+      {encounterData?.story && (
+        <div class="whitespace-pre-line">{encounterData?.story}</div>
+      )}
     </>
   );
 });

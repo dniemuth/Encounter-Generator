@@ -31,8 +31,6 @@ export const EncounterContext = createContextId<{
 export const useSubmitPrompt = routeAction$(
   async (item: IQuestionaire) => {
     const {useGPT} = item;
-    console.log({useGPT});
-    console.log(item)
     const APIKEY = useGPT
       ? process.env["GPT_APIKEY"] ?? ""
       : process.env["PALM_APIKEY"] ?? "";
@@ -56,14 +54,12 @@ export const useSubmitPrompt = routeAction$(
           temperature: 1.0,
           candidate_count: 3,
         };
-    console.info(JSON.stringify(body));
     const res = await fetch(basePath, {
       headers,
       method: "POST",
       body: JSON.stringify(body),
     });
     const result = await res.json();
-    console.info(result);
     // const res = { ok: true, status: "200" };
     // const result = {
     //   choices: [{ message: { content: JSON.stringify(temp) } }],
@@ -81,11 +77,7 @@ export const useSubmitPrompt = routeAction$(
 
 export const useGetStory = routeAction$(
   async (item) => {
-    console.log(item.useGPT);
-
      const {useGPT} = item;
-    console.log({useGPT});
-    console.log(item)
     const APIKEY = useGPT
       ? process.env["GPT_APIKEY"] ?? ""
       : process.env["PALM_APIKEY"] ?? "";
@@ -116,7 +108,6 @@ export const useGetStory = routeAction$(
       body: JSON.stringify(body),
     });
     const result = await res.json();
-    console.info(result);
     return { ok: res.ok, status: res.status, result };
   },
   zod$({

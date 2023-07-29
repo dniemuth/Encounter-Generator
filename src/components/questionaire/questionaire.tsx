@@ -10,11 +10,14 @@ import {
   PROMPT_INTRO,
 } from "~/utils/promptants";
 import type { IQuestionaire, IStatBlock } from "~/utils/types";
-// import { streamStats } from "~/api/functions";
+// import { statStream } from "~/api/functions";
 
-const statStream = server$(async function* (item: IQuestionaire) {
+export const config = {
+  runtime: "edge",
+};
+
+export const statStream = server$(async function* (item: IQuestionaire) {
   const isGPT = true;
-  console.log(item);
   const APIKEY = isGPT
     ? process.env["GPT_APIKEY"] ?? ""
     : process.env["PALM_APIKEY"] ?? "";
@@ -23,6 +26,8 @@ const statStream = server$(async function* (item: IQuestionaire) {
     : "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText";
   const headers = {
     "Content-Type": "application/json",
+    // 'Content-Type': 'text/event-stream',
+    "X-Content-Type-Options": "nosniff",
     ...(isGPT
       ? { Authorization: `Bearer ${APIKEY}` }
       : { "x-goog-api-key": APIKEY }),
@@ -32,7 +37,6 @@ const statStream = server$(async function* (item: IQuestionaire) {
   const messages = {
     messages: [{ role: "user", content: messageContent }],
   };
-  console.log("calling: " + basePath);
   const res = await fetch(basePath, {
     headers,
     method: "POST",
@@ -80,13 +84,11 @@ export const Questionaire = component$(() => {
   const action = useSubmitPrompt();
   const getStory = useGetStory();
   const showStream = useSignal(false);
-  console.log(showStream);
 
   useTask$(({ track }) => {
     track(() => action.value);
     if (action.value?.ok) {
-      console.log(action.value.result);
-      console.log(action.formData?.get("useGPT"));
+      encounterStore.dataFetching = false;
       encounterStore.data =
         action.formData?.get("useGPT") === "on"
           ? action.value?.result?.choices[0]?.message?.content ?? ""
@@ -179,10 +181,14 @@ export const Questionaire = component$(() => {
         <button
           class="my-2 ring-2 ring-green-400 px-4 py-1 rounded-full text-green-400"
           type="submit"
+          onClick$={() => {
+            encounterStore.data = "";
+            encounterStore.dataFetching = true;
+          }}
         >
           Generate Stats
         </button>
-        {showStream.value && (
+        {/* {showStream.value && (
           <>
             <br />
             <button
@@ -191,7 +197,6 @@ export const Questionaire = component$(() => {
                 const form = document.getElementById("form") as HTMLFormElement;
                 const formData = new FormData(form);
                 const formDataObject = Object.fromEntries(formData.entries());
-                console.log(formDataObject);
                 const response = await statStream(formDataObject);
                 if (response) {
                   // if( typeof encounterStore.data === 'number') {
@@ -212,7 +217,7 @@ export const Questionaire = component$(() => {
               streaming
             </button>
           </>
-        )}
+        )} */}
       </Form>
       <button
         class="my-2 ring-2 ring-cyan-400 px-4 py-1 rounded-full text-cyan-400"
@@ -233,7 +238,6 @@ export const Questionaire = component$(() => {
             text: description,
             useGPT: useGPT,
           });
-          // console.log(value);
           encounterStore.story = useGPT
             ? value.result?.choices[0]?.message?.content ?? ""
             : value?.result?.candidates[0]?.output ?? "";
